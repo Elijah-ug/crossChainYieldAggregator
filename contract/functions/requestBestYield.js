@@ -1,32 +1,34 @@
 require("dotenv").config({path: "../.env"});
 
 const  getBestYield  =  require("./getBestApy.js");
-const  ethers  =  require("ethers");
-const  config  =  require("./functionsConfig.js");
-const pk = require("@chainlink/functions-toolkit");
-const pkg = require("@chainlink/functions-toolkit");
-const { FunctionsConsumerContract } = pkg;
+                                                                                                                                                                                                                                                  const  ethers  =  require("ethers");
+const config = require("./functionsConfig.js");
+const { toUtf8Bytes } = require("ethers")
+// const pkg = require("@chainlink/functions-toolkit");
+// const { FunctionsConsumerContract } = pkg;
+const contractAbi = require("../artifacts/contracts/sender/CCIPSender.sol/CCIPSender.json")
 
 // ✅ Setup provider and signer
 const provider = new ethers.JsonRpcProvider(config.rpcUrl);
 const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
-
+// console.log(config)
 async function requestBestYield() {
   try {
     console.log("🔑 Loaded private key:", wallet.address);
     console.log("🔍 Fetching yield data...");
 
     const encodedData = await getBestYield();
+    // console.log("encodedData hex:", encodedData);
 
     // ✅ Interact with deployed contract
     const functionsConsumer = new ethers.Contract(
       config.contractAddress,
-      FunctionsConsumerContract.abi,
+      contractAbi.abi,
       wallet
     );
+    console.log("functionsConsumer:", functionsConsumer);
 
-    const tx = await functionsConsumer.sendRequest(
-      "", // Empty source if encodedRequest is already encoded
+    const tx = await functionsConsumer.sendRequestToGetBestYield(
       encodedData,
       config.subscriptionId,
       config.gasLimit,

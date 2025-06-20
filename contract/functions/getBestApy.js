@@ -1,10 +1,12 @@
 require("dotenv").config({path: "../.env"});
 const axios = require("axios");
+const { AbiCoder } = require("ethers");
+const abiCoder = new AbiCoder();
+
 // import { Functions } from "@chainlink/functions-toolkit";
+
 const functionsToolkit = require("@chainlink/functions-toolkit");
 const { Functions } = functionsToolkit;
-
-// const PRIVATE_KEY="0xbc468efbbcebf6f7e737f66fdeb469b8695cd37f07cf80b30f87ce5babf5ffb2"
 
 
   const getBestYield =  async (args) => {
@@ -24,25 +26,31 @@ const { Functions } = functionsToolkit;
         filtered.sort((a, b) => b.apyBase - a.apyBase);
         const best = filtered[0];
         const result = JSON.stringify({
-            preferredStrategy: best.poolMeta || "Unknown Strategy",
-            chain: best.chain,
-            apy: best.apyBase,
-            symbol: best.symbol,
-            poolAddress: best.pool,
-          });
-          console.log("Private key", process.env.ETHEREUM_SEPOLIA_RPC_URL)
-         console.log("Encoded Result: ", result);
-        const encodedResult = Buffer.from(JSON.stringify(result)).toString("base64");
-        console.log("encodedResult: ", encodedResult)
-         return encodedResult;
+          project: best.poolMeta || "Unknown Strategy",
+          chain: best.chain,
+          symbol: best.symbol,
+          poolAddress: best.pool,
+          apy: best.apyBase,
+        });
 
-        // return Functions.encodeString(JSON.stringify(result));
+        const encodedResult = abiCoder.encode(
+          ["tuple(string project, string chain, string symbol, string poolAddress, uint256 apy)"],
+          [[
+            best.poolMeta ?? "Unknown Strategy",
+            best.chain ?? "Unknown Chain",
+            best.symbol ?? "USDC",
+            best.pool ?? "0x0000000000000000000000000000000000000000",
+            Math.round((best.apyBase ?? 0) * 1e4)
+          ]]
+        );
+
+      // console.log("encodedResult", encodedResult)
+      return encodedResult;
+
     } catch (error) {
         console.log("Error occured here", error);
-        return Functions.encodeString("error")
+        return
+
     }
  }
-  module.exports = getBestYield();
-// export default async function handler(req, res) {
-//     return await getBestYield();
-// }
+  module.exports = getBestYield;

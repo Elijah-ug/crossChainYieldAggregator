@@ -1,9 +1,9 @@
 const { buildModule } = require("@nomicfoundation/hardhat-ignition/modules");
 
-  const linkTokenAddress = "0x097D90c9d3E0B50Ca60e1ae45F6A81010f9FB534";           // LINK token for CCIP fees
+  const linkTokenAddress = "0x779877a7b0d9e8603169ddbd7836e478b4624789";           // LINK token for CCIP fees
   const ccipRouterAddress = "0x0BF3dE8c5D3e8A2B34D2BEeB17ABfCeBaf363A59";         // CCIP router address for sending cross-chain messages
   const usdcTokenAddress = "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238";           // USDC token used in your yield strategy
-const chainlinkOracle = "0x447Fd5eC2D383091C22B8549cb231a3bAD6d3fAf";         // Chainlink Functions Oracle address
+const chainlinkOracle = "0xb83E47C2bC239B3bf370bc41e1459A34b41238D0";         // Chainlink Functions Oracle address
 
 module.exports = buildModule("CCIPSenderModule", (m) => {
   // Replace these with actual addresses from your environment/testnet
