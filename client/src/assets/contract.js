@@ -1,5 +1,5 @@
 // import contractAbi from "../utils/CCIPSender.json"
-import contractAbi from "../../../contract/artifacts/contracts/sender/AutoCCIPSender.sol/CCIPSender.json"
+import contractAbi from "../../../contract/artifacts/contracts/sender/CCIPSender.sol/CCIPSender.json"
 import { ethers } from "ethers"
 import { CCIPSenderAddress } from "../../config";
 const getProvider = () => {

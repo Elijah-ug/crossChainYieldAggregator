@@ -18,7 +18,7 @@ export const fetchBestYieldData = createAsyncThunk(
                 chain: bestYieldData.chain,
                 symbol: bestYieldData.symbol,
                 poolAddress: bestYieldData.poolAddress,
-                apy: (Number(bestYieldData.apy) / 1e4).toFixed(2)
+                apy: (Number(bestYieldData.apy)).toFixed(2)
 
             }
         } catch (error) {

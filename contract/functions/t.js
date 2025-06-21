@@ -1,10 +1,11 @@
 require("dotenv").config({ path: "../.env" });
 const axios = require("axios");
 const { ethers, AbiCoder } = require("ethers");
-const contractABI = require("../artifacts/contracts/sender/AutoCCIPSender.sol/CCIPSender.json").abi;
+// const contractABI = require("../artifacts/contracts/sender/AutoCCIPSender.sol/CCIPSender.json").abi;
+const contractABI = require("../artifacts/contracts/sender/CCIPSender.sol/CCIPSender.json").abi;
 
-const ETHEREUM_SEPOLIA_RPC_URL = "https://sepolia.infura.io/v3/6970619f7d024461b979d28f25e286b1";
-const CONTRACT_ADDRESS = "0x12b1d0Dba395eCbe650eC23dA04a6A01efa88807";
+const ETHEREUM_SEPOLIA_RPC_URL = process.env.ETHEREUM_SEPOLIA_RPC_URL;
+const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS;
 
 const provider = new ethers.JsonRpcProvider(ETHEREUM_SEPOLIA_RPC_URL);
 const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
@@ -16,6 +17,7 @@ async function sendBestYieldRequest() {
 
     // Step 1: Fetch yield data
     const response = await axios.get("https://yields.llama.fi/pools");
+    if (!response.data || !response.data.data) throw new Error("Invalid API structure");
     const pools = response.data.data;
 
     const supportedChains = ["Polygon", "Ethereum", "Avalanche", "Base", "Arbitrum"];
@@ -30,22 +32,27 @@ async function sendBestYieldRequest() {
 
     filtered.sort((a, b) => b.apyBase - a.apyBase);
     const best = filtered[0];
-
-    console.log("✅ Best Pool Found:", best.poolMeta, "on", best.chain, "APY:", best.apyBase);
+// console.log(best)
+    // console.log("✅ Best Pool Found:", best.poolMeta, "on", best.chain, "APY:", best.apyBase);
 
     // Step 2: Encode result for Solidity
     const encoded = abiCoder.encode(
-      ["tuple(string project,string chain,string symbol,string poolAddress,uint256 apy)"],
+      ["tuple(string,string,string,string,uint256)"],
       [[
         best.poolMeta || "Unknown Strategy",
         best.chain || "Unknown Chain",
         best.symbol || "USDC",
-        best.pool || "0x0000000000000000000000000000000000000000",
-        Math.round((best.apyBase || 0) * 1e4)
+        best.underlyingTokens[0] || "0x0000000000000000000000000000000000000000",
+        Math.round(Number(best.apyBase || 0) )
       ]]
     );
+    console.log("Strategy: ", best.poolMeta);
+    console.log("Chain: ", best.chain);
+    console.log("sybol: ", best.symbol);
+    console.log("address: ", best.underlyingTokens[0]);
+    console.log("apy: ", best.apy);
 
-    console.log("📦 Encoded yield data ready.");
+    console.log("📦 Encoded yield data ready.", encoded);
 
     // Step 3: Call update function on contract
     const contract = new ethers.Contract(CONTRACT_ADDRESS, contractABI, wallet);

@@ -1,9 +1,15 @@
-import React from 'react'
 import {NavLink, Outlet} from "react-router-dom"
 import DepositForm from './DepositForm'
 import WithdrawForm from './WithdrawForm'
+import { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { connectWallet } from '../features/sender/auth/walletThunk'
 
 export default function Forms() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(connectWallet());
+  }, []);
   return (
       <div>
       <div class="min-h-screen flex items-center justify-center px-4">
