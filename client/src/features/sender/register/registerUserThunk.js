@@ -9,7 +9,6 @@ export const fetchRegisterUser = createAsyncThunk(
             const contract = await getContract();
             const user = await contract.registerUser()
             await user.wait();
-            console.log(user.user)
             toast.success("Registered as User")
         } catch (error) {
             console.log(error.message);

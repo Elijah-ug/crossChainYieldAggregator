@@ -3,14 +3,23 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchTriggerBestApy } from '../features/trigger/triggerApyThunk';
 import { useEffect } from 'react';
 import { fetchClientsThunk } from '../features/sender/clients/clientThunk';
+import LatestYield from './LatestYield';
+import { fetchBestReceiverYield } from '../features/receiver/yield/bestYieldThunk';
+import { fetchGetBalance } from '../features/receiver/thunks/getBalanceThunk';
+import { connectWallet } from '../features/sender/auth/walletThunk';
 
 export default function UserDashboard() {
   const dispatch = useDispatch();
   const { clients } = useSelector((state) => state.clients);
-  console.log(clients)
+  const { address } = useSelector((state) => state.auth);
+  console.log("address: ", address)
   useEffect(() => {
     dispatch(fetchClientsThunk());
+    dispatch(fetchGetBalance({address}))
+    dispatch(connectWallet())
   }, [])
+  // dispatch(fetchBestReceiverYield())
+  // dispatch(fetchClientsThunk());
 
   return (
     <div>
@@ -18,7 +27,7 @@ export default function UserDashboard() {
       <div className="mt-4">
         {
           clients.length > 0 ? (
-            clients.map((client) => <div>
+            clients.map((client, index) => <div key={index}>
               <p>{client.user}</p>
               <p>{ client.balance}</p>
           </div> )
@@ -26,7 +35,7 @@ export default function UserDashboard() {
             (<p>No users available</p> )
         }
       </div>
-
+      <LatestYield/>
     </div>
   )
 }

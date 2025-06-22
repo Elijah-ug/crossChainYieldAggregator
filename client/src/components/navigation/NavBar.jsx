@@ -11,6 +11,7 @@ export default function NavBar() {
        <NavLink to="/">Home</NavLink>
         <NavLink to="user-dashboard">User Dashboard</NavLink>
         <NavLink to="deposit-withdraw">Deposit/Withdraw</NavLink>
+        <NavLink to="settings">Selector And Receiver</NavLink>
         </div>
 
 

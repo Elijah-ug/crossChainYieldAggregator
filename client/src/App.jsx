@@ -7,6 +7,7 @@ import NavBar from './components/navigation/NavBar'
 import Forms from './components/Forms'
 import DepositForm from './components/DepositForm'
 import WithdrawForm from './components/WithdrawForm'
+import SelectorAndReceiver from './components/admin/SelectorAndReceiver'
 export default function App() {
   return (
     <div>
@@ -18,6 +19,7 @@ export default function App() {
         <Route path="deposit" element={<DepositForm />} />
         <Route path="withdraw" element={<WithdrawForm/> } />
         </Route>
+        <Route path="settings" element={<SelectorAndReceiver/> } />
 
       </Routes>
     </div>

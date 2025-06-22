@@ -3,6 +3,7 @@ import ConnectWallet from './ConnectWallet'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchBestYieldData } from '../features/sender/yield/yieldThunk';
 import { fetchTriggerBestApy } from '../features/trigger/triggerApyThunk';
+import { connectWallet } from '../features/sender/auth/walletThunk';
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -10,6 +11,7 @@ export default function Home() {
   console.log("best bestYield", bestYield.apy)
   useEffect(() => {
     dispatch(fetchBestYieldData())
+    dispatch(connectWallet())
 
   }, [])
   const handleUpdateYield = async () => {

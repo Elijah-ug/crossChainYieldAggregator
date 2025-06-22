@@ -9,12 +9,12 @@ export const connectWallet = createAsyncThunk(
             if (!window.ethereum) throw new Error("Metamask Not detected")
             const ethSepoliaChainId = "0xaa36a7"
             const network = await window.ethereum.request({ method: "eth_chainId" });
-            if (ethSepoliaChainId !== network) {
-                await window.ethereum.request({
-                    method: "wallet_switchEthereumChain",
-                    params: [{chainId: ethSepoliaChainId}]
-                })
-            }
+            // if (ethSepoliaChainId !== network) {
+            //     await window.ethereum.request({
+            //         method: "wallet_switchEthereumChain",
+            //         params: [{chainId: ethSepoliaChainId}]
+            //     })
+            // }
             const accounts = await window.ethereum.request({ method: "eth_requestAccounts" })
             dispatch(fetchRegisterUser())
             toast.success("Wallet connected")

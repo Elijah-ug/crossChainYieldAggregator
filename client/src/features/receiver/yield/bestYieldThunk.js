@@ -1,0 +1,18 @@
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import { getReceiverContract } from "../../../assets/receiverContract";
+
+export const fetchBestReceiverYield = createAsyncThunk(
+    "receivedYield/fetchBestReceiverYield",
+    async (_, { rejectWithValue }) => {
+        try {
+            const contract = await getReceiverContract();
+            const latestYield = await contract.getLatestStrategy();
+            console.log("latestYield: ", latestYield);
+            console.log("contract: ", contract);
+            console.log(contract.target);
+            return latestYield;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+)
