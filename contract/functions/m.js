@@ -31,7 +31,7 @@ async function sendBestYieldRequest() {
 
     filtered.sort((a, b) => b.apyBase - a.apyBase);
     const best = filtered[0];
-
+    console.log("CONTRACT_ADDRESS: ", CONTRACT_ADDRESS)
     console.log("✅ Best Pool Found:", best.poolMeta, "on", best.chain, "APY:", best.apyBase);
 
     // Step 2: Encode result for Solidity

@@ -7,10 +7,12 @@ export const fetchBestReceiverYield = createAsyncThunk(
         try {
             const contract = await getReceiverContract();
             const latestYield = await contract.getLatestStrategy();
-            console.log("latestYield: ", latestYield);
+            // console.log("latestYield: ", latestYield);
             console.log("contract: ", contract);
-            console.log(contract.target);
-            return latestYield;
+            console.log("contract.target: " + contract.target);
+            const [project, poolAddress, symbol, rawApy] = latestYield;
+            console.log("Projects ====: ", project)
+             return { project, poolAddress, symbol, apy: rawApy.toString(), };
         } catch (error) {
             return rejectWithValue(error.message);
         }

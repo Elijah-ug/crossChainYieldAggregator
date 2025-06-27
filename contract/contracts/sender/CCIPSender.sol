@@ -7,10 +7,10 @@ import {LinkTokenInterface} from "@chainlink/contracts/src/v0.8/shared/interface
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@chainlink/contracts/src/v0.8/functions/v1_0_0/FunctionsClient.sol";
 import "@chainlink/contracts/src/v0.8/functions/v1_0_0/libraries/FunctionsRequest.sol";
-import "@chainlink/contracts/src/v0.8/automation/interfaces/KeeperCompatibleInterface.sol";
+import "@chainlink/contracts/src/v0.8/automation/interfaces/AutomationCompatibleInterface.sol";
 
 
- contract CCIPSender is ReentrancyGuard, FunctionsClient, KeeperCompatibleInterface {
+ contract CCIPSender is ReentrancyGuard, FunctionsClient, AutomationCompatibleInterface {
     using FunctionsRequest for FunctionsRequest.Request;
     IRouterClient public immutable ccipRouter;
     LinkTokenInterface public immutable linkToken;

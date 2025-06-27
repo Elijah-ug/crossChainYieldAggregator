@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from "react-redux";
-import { connectWallet } from '../features/sender/auth/walletThunk';
+import { connectWallet } from '../features/wallet/auth/walletThunk';
 export default function ConnectWallet() {
   const dispatch = useDispatch()
   const { address, chainId } = useSelector((state) => state.auth);

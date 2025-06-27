@@ -1,18 +1,18 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { getContract } from "../../assets/contract";
+import { getContract } from "../../../assets/contract";
 import { toast } from "react-toastify";
 
 export const fetchSetReceiverAndChain = createAsyncThunk(
-    "selector/fetchSetReceiverAndChain",
+    "baseSepolia/fetchSetReceiverAndChain",
     async ({ receiver, selector }, { rejectWithValue }) => {
         try {
             const contract = await getContract();
-            const receiverAndSelector = await contract.setReceiverAndChain(receiver, selector);
-            await receiverAndSelector.wait();
-            toast.success("Receiver and selector set!")
-            console.log(receiver, selector);
+            const setting = await contract.setReceiverAndChain(receiver, selector);
+            await setting.wait();
+            toast.success("Receiver and Selector set")
+            console.log("Receiver Chain set");
+            return true;
         } catch (error) {
-            toast.error("Receiver and Selector setting Failed");
             console.log(error.message);
             return rejectWithValue(error.message);
         }

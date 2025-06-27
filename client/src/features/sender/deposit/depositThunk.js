@@ -19,18 +19,18 @@ export const fetchDepositThunk = createAsyncThunk(
             const usdc = await getUsdcTokenContract(signer);
             const contract = await getContract();
 
-            const parsedAmount = ethers.parseUnits(amount, 6)
+            const parsedAmount = ethers.parseUnits(String(amount), 6);
 
-            const approveTx = await usdc.approve(contract.target, amount);
+            const approveTx = await usdc.approve(contract.target, parsedAmount);
             await approveTx.wait();
 
-            const deposit = await contract.deposit(amount);
+            const deposit = await contract.deposit(parsedAmount);
             await deposit.wait();
             toast.success("Deposited Successfully")
             return true;
         } catch (error) {
             toast.error("Deposit Failed");
-            return rejectWithValue(error.value);
+            return rejectWithValue(error.message);
         }
     }
 )

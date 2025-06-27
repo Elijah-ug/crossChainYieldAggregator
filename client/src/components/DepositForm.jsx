@@ -1,18 +1,21 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { fetchDepositThunk } from '../features/sender/deposit/depositThunk';
+import { ethers } from 'ethers';
 
 export default function DepositForm() {
-  const [amount, setAmount] = useState(null);
+  const [amount, setAmount] = useState("");
   const dispatch = useDispatch();
   const handleClick = async (e) => {
     e.preventDefault()
-    const parsedAmount = parseFloat(amount);
+    const parsedAmount = String(amount);
       if (!isNaN(parsedAmount) && parsedAmount > 0) {
-        dispatch(fetchDepositThunk({amount: parsedAmount}));
+        await dispatch(fetchDepositThunk({ amount: ethers.parseUnits(parsedAmount) }))
+          .then(() => setAmount(""));
       } else {
         console.log("Invalid amount")
       }
+
   }
   return (
     <div >
@@ -21,7 +24,7 @@ export default function DepositForm() {
           <form onSubmit={handleClick} className="space-y-4 bg-white rounded p-4">
       {/* <!-- Amount --> */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Amount (ETH)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Amount (USDC)</label>
           <input value={amount} onChange={(e) => setAmount(e.target.value)}
             type="number" step="0.001" placeholder="Enter Amount"
                className="w-full px-4 py-2 border border-gray-300 text-gray-800 outline-none rounded-xl focus:outline-none "

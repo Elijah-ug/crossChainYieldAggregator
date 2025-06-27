@@ -2,23 +2,23 @@ import React, { useEffect } from 'react'
 import ConnectWallet from './ConnectWallet'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchBestYieldData } from '../features/sender/yield/yieldThunk';
-import { fetchTriggerBestApy } from '../features/trigger/triggerApyThunk';
-import { connectWallet } from '../features/sender/auth/walletThunk';
+import { fetchConstants } from '../features/sender/constants/constantsThunk';
 
 export default function Home() {
   const dispatch = useDispatch();
   const { loading, bestYield, error } = useSelector((state) => state.yield);
-  console.log("best bestYield", bestYield.apy)
+  const { address } = useSelector((state) => state.auth);
+  const { receiver, selector } = useSelector((state) => state.constants);
+  console.log("best bestYield", bestYield)
   useEffect(() => {
-    dispatch(fetchBestYieldData())
-    dispatch(connectWallet())
-
+    dispatch(fetchBestYieldData());
+    dispatch(fetchConstants())
   }, [])
   const handleUpdateYield = async () => {
     try {
       const res = await fetch("http://localhost:5000/update-yield", { method: "POST" });
       const data = await res.json();
-      console.log(data)
+      console.log("data", data)
     } catch (error) {
 
     }
@@ -30,8 +30,7 @@ export default function Home() {
       <div className="">
         <ConnectWallet/>
       </div>
-      <button onClick={handleUpdateYield}
-      className="bg-amber-400 text-gray-700 px-4 py-2 cursor-pointer rounded shadow">Get Best</button>
+
 
       <div className=" p-6 flex items-center justify-center mt-10">
   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl w-full">
@@ -57,11 +56,20 @@ export default function Home() {
         <p className="text-amber-600"><span className="font-medium mr-4">Symbol:</span> {bestYield.symbol}</p>
         <p className="text-amber-600"><span className="font-medium mr-4">Pool Address:</span> {bestYield.poolAddress}</p>
         <p className="text-amber-600"><span className="font-medium mr-4">APY:</span> {bestYield.apy}%</p>
-      </div>
+            </div>
+            <button onClick={handleUpdateYield}
+        className="bg-amber-400 text-gray-700 px-8 py-2  rounded shadow">Get Best
+      </button>
     </div>
 
   </div>
-</div>
+      </div>
+      <div className="flex justify-center p-2 text-lg">
+        <div>
+        <p>Receiver Contract: <span className="ml-2 text-amber-500">{receiver }</span></p>
+        <p>Selector: <span className="ml-2 text-amber-500">{ selector}</span></p>
+        </div>
+      </div>
 
     </div>
   )

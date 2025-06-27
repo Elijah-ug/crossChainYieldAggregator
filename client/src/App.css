@@ -11,3 +11,6 @@ body{
 .active{
     color: #fc3333;
 }
+button{
+    cursor: pointer;
+}

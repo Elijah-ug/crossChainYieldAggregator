@@ -3,11 +3,11 @@ pragma solidity ^0.8.28;
 import {CCIPReceiver} from "@chainlink/contracts-ccip/contracts/applications/CCIPReceiver.sol";
 import {Client} from "@chainlink/contracts-ccip/contracts/libraries/Client.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@chainlink/contracts/src/v0.8/automation/interfaces/KeeperCompatibleInterface.sol";
+import "@chainlink/contracts/src/v0.8/automation/interfaces/AutomationCompatibleInterface.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 
-contract ReceiverContract is  CCIPReceiver, KeeperCompatibleInterface, ReentrancyGuard {
+contract ReceiverContract is  CCIPReceiver, AutomationCompatibleInterface, ReentrancyGuard {
     IERC20 public immutable usdcToken;
     address public immutable senderContract; // CCIPSender on source chain
     YieldData public latestYield;

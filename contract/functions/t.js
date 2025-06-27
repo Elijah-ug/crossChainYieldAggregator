@@ -46,6 +46,7 @@ async function sendBestYieldRequest() {
         Math.round(Number(best.apyBase || 0) )
       ]]
     );
+    console.log("CONTRACT_ADDRESS: ", CONTRACT_ADDRESS)
     console.log("Strategy: ", best.poolMeta);
     console.log("Chain: ", best.chain);
     console.log("sybol: ", best.symbol);

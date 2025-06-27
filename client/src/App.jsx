@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import "./App.css"
 import { Route, Routes } from 'react-router-dom'
 import Home from './components/Home'
@@ -8,7 +8,14 @@ import Forms from './components/Forms'
 import DepositForm from './components/DepositForm'
 import WithdrawForm from './components/WithdrawForm'
 import SelectorAndReceiver from './components/admin/SelectorAndReceiver'
+import { useDispatch } from 'react-redux'
+import { autoConnectWallet } from './features/wallet/auth/walletThunk'
 export default function App() {
+  const dispatch = useDispatch();
+
+  useEffect((state) => {
+    dispatch(autoConnectWallet());
+  })
   return (
     <div>
       <NavBar/>

@@ -1,2 +1,2 @@
-export const CCIPSenderAddress = "0xdd1ac12bA0F6FDcC4D979dB4FB1ebd99906Fe674";
-export const CCIPReceiverAddress = "0x7b3A708Ce0F9Aa46Fe98c23CaE4259B9FecD9CBf";
+export const CCIPSenderAddress = "0x796ee4F79AD87D86452bc673a6b7ecFaB9ac42c8";
+export const CCIPReceiverAddress = "0xBc19208b9A406dc44b4840D28B73E98A7c66B46C";
