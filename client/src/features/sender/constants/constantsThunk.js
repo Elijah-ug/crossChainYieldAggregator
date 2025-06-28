@@ -10,7 +10,7 @@ export const fetchConstants = createAsyncThunk(
             const selector = await contract.destinationChainSelector();
 
             console.log("Constants fetched");
-            return {receiver, selector};
+            return {receiver, selector: selector.toString()};
         } catch (error) {
             console.log(error.message);
             return rejectWithValue(error.message);
